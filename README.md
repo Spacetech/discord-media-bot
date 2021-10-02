@@ -1,7 +1,18 @@
 # Discord Media Bot
 Sonarr &amp; Radarr integration with Discord
 
-# Example docker-compose
+## Screenshots
+
+### Commands list
+![image](https://user-images.githubusercontent.com/824323/135698061-18977c55-5a12-4036-ae1f-3f5903e156c1.png)
+
+### Show command
+![image](https://user-images.githubusercontent.com/824323/135698098-34a987fd-0155-468e-9b4f-1739f5b46b2e.png)
+
+### Movie command
+![image](https://user-images.githubusercontent.com/824323/135698126-151d0000-d7dd-4cab-b8f7-39ce149f3e3a.png)
+
+## Example docker-compose
 
 ```
   mediabot:
