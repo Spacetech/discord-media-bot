@@ -5,7 +5,7 @@
         "name": "Gary Wilber"
     },
     "repository": {
-        "url": "https://git.blackbird.home/Spacetech/mediabot",
+        "url": "https://github.com/Spacetech/discord-media-bot",
         "type": "git"
     },
     "license": "MIT",
@@ -14,15 +14,11 @@
     },
     "main": "lib/index.js",
     "dependencies": {
-        "@azure/storage-blob": "^12.8.0",
         "@discordjs/builders": "^0.6.0",
         "@discordjs/rest": "0.1.0-canary.0",
         "discord-api-types": "^0.23.1",
         "discord.js": "^13.1.0",
-        "node-fetch": "^2.6.1",
-        "puppeteer-core": "^10.4.0",
-        "puppeteer-extra": "^3.2.3",
-        "puppeteer-extra-plugin-stealth": "^2.8.1"
+        "node-fetch": "^2.6.1"
     },
     "devDependencies": {
         "@types/node-fetch": "^2.5.9",

@@ -16,7 +16,7 @@ Sonarr &amp; Radarr integration with Discord
 
 ```
   mediabot:
-    image: mediabot
+    image: ghcr.io/spacetech/discord-media-bot:main
     restart: unless-stopped
     container_name: mediabot
     volumes:

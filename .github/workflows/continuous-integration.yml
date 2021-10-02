@@ -7,11 +7,11 @@ name: Docker
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: ["v*.*.*"]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -19,10 +19,8 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,12 +34,12 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-          cache: 'npm'
-          
+          cache: "npm"
+
       - run: npm ci
-      
+
       - run: npm run build
-      
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
