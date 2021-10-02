@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  mediabot:
+    image: discord-media-bot
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
