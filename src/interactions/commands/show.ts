@@ -77,7 +77,7 @@ export const showCommand: ICommand = {
         return { content: "Select a show", components: [row] };
     },
 
-    selectMenuProcessor: async (interaction, state, selection, subCommand) => {
+    selectMenuProcessor: async (interaction, state, subCommand, selection) => {
         const show = state.sonarrShow ?? state.sonarrShows?.[parseInt(selection, 10)];
         if (show) {
             switch (subCommand) {
@@ -156,7 +156,7 @@ export const showCommand: ICommand = {
         };
     },
 
-    buttonProcessor: async (interaction, state, selection, subCommand) => {
+    buttonProcessor: async (interaction, state, subCommand, selection) => {
         let show = state.sonarrShow;
         if (show) {
             switch (subCommand) {

@@ -8,7 +8,7 @@ export const scanCommand: ICommand = {
 
     slashCommand: new SlashCommandBuilder()
         .setName("scan")
-        .setDescription("Scans a plex library"),
+        .setDescription("Scan a plex library"),
 
     commandProcessor: async () => {
         const libraries = await plex.getLibraries();
@@ -26,7 +26,7 @@ export const scanCommand: ICommand = {
                             let option: MessageSelectOptionData = {
                                 label,
                                 description,
-                                value: `scan,library,${library.key}`,
+                                value: `scan,${library.title},${library.key}`,
                             };
 
                             return option;
@@ -37,11 +37,11 @@ export const scanCommand: ICommand = {
         return { content: "Select a library", components: [row] };
     },
 
-    selectMenuProcessor: async (interaction, state, selection, subCommand) => {
+    selectMenuProcessor: async (interaction, state, subCommand, selection) => {
         const success = await plex.refreshLibrary(selection);
 
         return {
-            content: success ? "Initiated scan for library" : "Failed to initiate scan for library"
+            content: success ? `Initiated scan for library "${subCommand}"` : `Failed to initiate scan for library "${subCommand}"`
         };
     }
 }

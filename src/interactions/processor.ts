@@ -21,7 +21,6 @@ export async function processInteraction(interaction: Interaction): Promise<void
                 await interaction.reply({ content: `Unknown command "${interaction.commandName}"`, ephemeral });
             }
 
-
         } else if (interaction.isSelectMenu()) {
             const [commandName, subCommand, selection] = interaction.values[0].split(",");
 
@@ -30,7 +29,7 @@ export async function processInteraction(interaction: Interaction): Promise<void
                 await interaction.deferReply({ ephemeral });
 
                 const state = getState(interaction.user.id);
-                const reply = await command.selectMenuProcessor(interaction, state, selection, subCommand);
+                const reply = await command.selectMenuProcessor(interaction, state, subCommand, selection);
 
                 await interaction.editReply(reply);
 
@@ -46,7 +45,7 @@ export async function processInteraction(interaction: Interaction): Promise<void
                 await interaction.deferReply({ ephemeral });
 
                 const state = getState(interaction.user.id);
-                const reply = await command.buttonProcessor(interaction, state, selection, subCommand);
+                const reply = await command.buttonProcessor(interaction, state, subCommand, selection);
 
                 await interaction.editReply(reply);
 

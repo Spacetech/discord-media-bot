@@ -9,7 +9,7 @@ export const missingCommand: ICommand = {
 
     slashCommand: new SlashCommandBuilder()
         .setName("missing")
-        .setDescription("Views missing shows & movies"),
+        .setDescription("View missing shows & movies"),
 
     commandProcessor: async (interaction, state) => {
         const results = await Promise.all([sonarr.getSeries(), sonarr.getMissingEpisodes()]);

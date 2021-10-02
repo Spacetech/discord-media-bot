@@ -9,7 +9,7 @@ export const queueCommand: ICommand = {
 
     slashCommand: new SlashCommandBuilder()
         .setName("queue")
-        .setDescription("Views the download queue"),
+        .setDescription("View the download queue"),
 
     commandProcessor: async (interaction, state) => {
         const results = await Promise.all([radarr.getMovieQueue(), sonarr.getShowQueue(), sonarr.getSeries()]); // , lidarr.getQueue()

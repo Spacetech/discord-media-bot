@@ -6,6 +6,6 @@ export interface ICommand {
     slashCommand: Partial<SlashCommandBuilder>;
 
     commandProcessor?(interaction: CommandInteraction, state: IUserState): Promise<InteractionReplyOptions>;
-    selectMenuProcessor?(interaction: SelectMenuInteraction, state: IUserState, selection: string, subCommand: string | undefined): Promise<InteractionReplyOptions>;
-    buttonProcessor?(interaction: ButtonInteraction, state: IUserState, selection: string, subCommand: string | undefined): Promise<InteractionReplyOptions>;
+    selectMenuProcessor?(interaction: SelectMenuInteraction, state: IUserState, subCommand: string, selection: string): Promise<InteractionReplyOptions>;
+    buttonProcessor?(interaction: ButtonInteraction, state: IUserState, subCommand: string, selection: string): Promise<InteractionReplyOptions>;
 }

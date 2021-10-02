@@ -88,7 +88,7 @@ export const movieCommand: ICommand = {
         return { content: "Select a movie", components: [row] };
     },
 
-    selectMenuProcessor: async (interaction, state, selection, subCommand) => {
+    selectMenuProcessor: async (interaction, state, subCommand, selection) => {
         const movie = state.radarrMovie ?? state.radarrMovies?.[parseInt(selection, 10)];
         if (movie) {
             switch (subCommand) {
@@ -145,7 +145,7 @@ export const movieCommand: ICommand = {
         };
     },
 
-    buttonProcessor: async (interaction, state, selection, subCommand) => {
+    buttonProcessor: async (interaction, state, subCommand, selection) => {
         let movie = state.radarrMovie;
         if (movie) {
             switch (subCommand) {

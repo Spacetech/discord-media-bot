@@ -32,7 +32,7 @@ class Config {
         return {
             url: this.getEnvironmentVariable("SONARR_URL"),
             apiKey: this.getEnvironmentVariable("SONARR_API_KEY"),
-            defaultMediaPath: parseInt(this.getEnvironmentVariable("SONARR_DEFAULT_MEDIA_PATH"), 10),
+            defaultMediaPath: this.getEnvironmentVariable("SONARR_DEFAULT_MEDIA_PATH"),
             defaultQualityProfileId: parseInt(this.getEnvironmentVariable("SONARR_DEFAULT_QUALITY_PROFILE_ID"), 10),
         };
     }
@@ -41,7 +41,7 @@ class Config {
         return {
             url: this.getEnvironmentVariable("RADARR_URL"),
             apiKey: this.getEnvironmentVariable("RADARR_API_KEY"),
-            defaultMediaPath: parseInt(this.getEnvironmentVariable("RADARR_DEFAULT_MEDIA_PATH"), 10),
+            defaultMediaPath: this.getEnvironmentVariable("RADARR_DEFAULT_MEDIA_PATH"),
             defaultQualityProfileId: parseInt(this.getEnvironmentVariable("RADARR_DEFAULT_QUALITY_PROFILE_ID"), 10),
         };
     }
