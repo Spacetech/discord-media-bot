@@ -2,11 +2,9 @@ import * as discord from "discord.js";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/rest/v9";
 
-import { processButton, processCommand, processSelectMenu } from "./processor";
-import { commands } from "./commands";
+import { commands } from "./interactions/commands";
 import { config } from "./config";
-
-const ephemeral = config.commands.ephemeral;
+import { processInteraction } from "./interactions/processor";
 
 /////////////////////////////////////////////////////////////////
 
@@ -31,56 +29,31 @@ client.on("unhandledRejection", (ex) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
-    let deferredReply = false;
-
-    try {
-        if (interaction.isCommand()) {
-            await interaction.deferReply({ ephemeral });
-            deferredReply = true;
-
-            const reply = await processCommand(interaction);
-            await interaction.editReply(reply);
-
-        } else if (interaction.isSelectMenu()) {
-            await interaction.deferReply({ ephemeral });
-            deferredReply = true;
-
-            const reply = await processSelectMenu(interaction);
-            await interaction.editReply(reply);
-
-        } else if (interaction.isButton()) {
-            await interaction.deferReply({ ephemeral });
-            deferredReply = true;
-
-            const reply = await processButton(interaction);
-            await interaction.editReply(reply);
-        }
-
-    } catch (ex) {
-        console.error(ex);
-
-        try {
-            await (interaction as any).editReply({ content: "An error occurred" });
-        } catch {
-            // ignore
-        }
-    }
+    await processInteraction(interaction);
 });
 
 async function registerCommands() {
+    const slashCommands = commands.map(command => command.slashCommand);
+
     await Promise.all(Array.from(config.bot.guids).map(async guildId => {
-        const rest = new REST({ version: "9" }).setToken(config.bot.token);
+        try {
+            const rest = new REST({ version: "9" }).setToken(config.bot.token);
 
-        console.log('Started refreshing application (/) commands.', guildId);
+            console.log(`Started registtering slash commands for guild ${guildId}...`);
 
-        await rest.put(
-            Routes.applicationGuildCommands(config.bot.userId, guildId),
-            {
-                body: commands,
-            },
-        );
+            await rest.put(
+                Routes.applicationGuildCommands(config.bot.userId, guildId),
+                {
+                    body: slashCommands,
+                },
+            );
 
-        console.log('Successfully reloaded application (/) commands.', guildId);
+            console.log(`Successfully to registered slash commands for guild ${guildId}`);
+
+        } catch (ex) {
+            console.error(`Failed to register slash commands for guild ${guildId}`, ex);
+            throw ex;
+        }
     }));
 }
 
