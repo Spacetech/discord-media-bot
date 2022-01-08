@@ -4,7 +4,7 @@ import { config } from "../config";
 class Radarr {
 
     async lookupMovies(name: string) {
-        const url = `${config.radarr.url}/api/movie/lookup?term=${encodeURIComponent(name)}`;
+        const url = `${config.radarr.url}/api/v3/movie/lookup?term=${encodeURIComponent(name)}`;
         const response = await fetch(url, {
             headers: {
                 "X-Api-Key": config.radarr.apiKey
@@ -26,7 +26,7 @@ class Radarr {
             movieIds: [movie.id]
         };
 
-        const url = `${config.radarr.url}/api/command`;
+        const url = `${config.radarr.url}/api/v3/command`;
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -59,7 +59,7 @@ class Radarr {
             searchForMovie: true
         };
 
-        const url = `${config.radarr.url}/api/movie`;
+        const url = `${config.radarr.url}/api/v3/movie`;
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -78,7 +78,7 @@ class Radarr {
     }
 
     async findDownloads(movieId: any) {
-        const url = `${config.radarr.url}/api/release?movieId=${movieId}&sort_by=releaseWeight&order=asc`;
+        const url = `${config.radarr.url}/api/v3/release?movieId=${movieId}&sort_by=releaseWeight&order=asc`;
         const response = await fetch(url, {
             headers: {
                 "X-Api-Key": config.radarr.apiKey
@@ -91,7 +91,7 @@ class Radarr {
     async downloadMovie(searchResult: any) {
         const request = searchResult;
 
-        const url = `${config.radarr.url}/api/release`;
+        const url = `${config.radarr.url}/api/v3/release`;
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -127,7 +127,7 @@ class Radarr {
     }
 
     async deleteQueuedMovie(id: any) {
-        const url = `${config.radarr.url}/api/queue/${id}`;
+        const url = `${config.radarr.url}/api/v3/queue/${id}`;
         const response = await fetch(url, {
             method: "DELETE",
             headers: {
