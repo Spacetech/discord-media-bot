@@ -30,6 +30,7 @@ class Radarr {
         const response = await fetch(url, {
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "X-Api-Key": config.radarr.apiKey
             },
             body: JSON.stringify(request)
@@ -63,6 +64,7 @@ class Radarr {
         const response = await fetch(url, {
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "X-Api-Key": config.radarr.apiKey
             },
             body: JSON.stringify(request),
