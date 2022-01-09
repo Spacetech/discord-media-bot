@@ -160,14 +160,11 @@ export const movieCommand: ICommand = {
                 }
 
                 case "search": {
-                    let searchResults = await radarr.findDownloads(movie.id) as any[];
+                    const searchResults = (await radarr.findDownloads(movie.id) as any[])
+                        .slice(0, 25);
                     if (searchResults.length === 0) {
                         return { content: "No results found" };
                     }
-
-                    searchResults = searchResults
-                        .slice(0, 25)
-                        .filter((result: { mappingResult: any; }) => result.mappingResult);
 
                     const row = new MessageActionRow()
                         .addComponents(
