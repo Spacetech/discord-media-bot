@@ -57,6 +57,9 @@ export const showCommand: ICommand = {
                                     }
                                 }
 
+                                // fill out the statistics from the existing show info in the db
+                                show.statistics = showDetails.statistics;
+
                                 description = `${downloaded}/${total} episodes downloaded`;
                             }
 
