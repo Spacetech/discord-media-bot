@@ -174,7 +174,7 @@ export const movieCommand: ICommand = {
                                 .addOptions(
                                     searchResults.map((result: any, index: number) => {
                                         let label = `${result.title}`;
-                                        let description = `${result.seeders} seeders / ${result.leechers} leechers`;
+                                        let description = `Size: ${(result.size / Math.pow(1024, 3)).toFixed(1)}. ${result.seeders} seeders / ${result.leechers} leechers`;
 
                                         let option: MessageSelectOptionData = {
                                             label: label.substring(0, 99),
