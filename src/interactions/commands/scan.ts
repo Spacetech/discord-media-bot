@@ -24,7 +24,7 @@ export const scanCommand: ICommand = {
                             let description = "";
 
                             let option: MessageSelectOptionData = {
-                                label,
+                                label: label.substring(0, 99),
                                 description,
                                 value: `scan,${library.title},${library.key}`,
                             };

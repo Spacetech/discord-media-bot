@@ -72,7 +72,7 @@ export const movieCommand: ICommand = {
                             }
 
                             let option: MessageSelectOptionData = {
-                                label,
+                                label: label.substring(0, 99),
                                 description,
                                 value: `movie,details,${index}`,
                             };
@@ -177,7 +177,7 @@ export const movieCommand: ICommand = {
                                         let description = `${result.seeders} seeders / ${result.leechers} leechers`;
 
                                         let option: MessageSelectOptionData = {
-                                            label,
+                                            label: label.substring(0, 99),
                                             description,
                                             value: `movie,download,${index}`,
                                         };

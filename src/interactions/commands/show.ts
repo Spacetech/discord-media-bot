@@ -64,7 +64,7 @@ export const showCommand: ICommand = {
                             }
 
                             let option: MessageSelectOptionData = {
-                                label,
+                                label: label.substring(0, 99),
                                 description,
                                 value: `show,details,${index}`,
                             };
@@ -207,7 +207,7 @@ export const showCommand: ICommand = {
                                         let label = `${result[1]}`;
 
                                         let option: MessageSelectOptionData = {
-                                            label,
+                                            label: label.substring(0, 99),
                                             value: `show,quality,${index}`,
                                         };
 
