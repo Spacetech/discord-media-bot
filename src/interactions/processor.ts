@@ -1,4 +1,4 @@
-import { Interaction } from "discord.js";
+import { ChatInputCommandInteraction, Interaction } from "discord.js";
 import { commands } from "./commands";
 import { config } from "../config";
 import { getState } from "../state";
@@ -13,7 +13,7 @@ export async function processInteraction(interaction: Interaction): Promise<void
                 await interaction.deferReply({ ephemeral });
 
                 const state = getState(interaction.user.id);
-                const reply = await command.commandProcessor(interaction, state);
+                const reply = await command.commandProcessor(interaction as ChatInputCommandInteraction, state);
 
                 await interaction.editReply(reply);
 
@@ -21,7 +21,7 @@ export async function processInteraction(interaction: Interaction): Promise<void
                 await interaction.reply({ content: `Unknown command "${interaction.commandName}"`, ephemeral });
             }
 
-        } else if (interaction.isSelectMenu()) {
+        } else if (interaction.isStringSelectMenu()) {
             const [commandName, subCommand, selection] = interaction.values[0].split(",");
 
             const command = commands.find(command => command.slashCommand.name === commandName);

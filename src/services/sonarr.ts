@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import { config } from "../config";
 
 class Sonarr {
@@ -91,6 +90,7 @@ class Sonarr {
         const response = await fetch(url, {
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "X-Api-Key": config.sonarr.apiKey
             },
             body: JSON.stringify(request)
@@ -179,6 +179,7 @@ class Sonarr {
         const response = await fetch(url, {
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "X-Api-Key": config.sonarr.apiKey
             },
             body: JSON.stringify(request)
@@ -203,6 +204,7 @@ class Sonarr {
         const response = await fetch(url, {
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "X-Api-Key": config.sonarr.apiKey
             },
             body: JSON.stringify(request)

@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { MessageActionRow, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
+import { APISelectMenuOption, ActionRowBuilder, StringSelectMenuBuilder } from "discord.js";
 
 import { ICommand } from "../command";
 import { plex } from "../../services/plex";
@@ -13,23 +13,19 @@ export const scanCommand: ICommand = {
     commandProcessor: async () => {
         const libraries = await plex.getLibraries();
 
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(
-                new MessageSelectMenu()
+                new StringSelectMenuBuilder()
                     .setCustomId("select")
                     .setPlaceholder("Nothing selected")
                     .addOptions(
                         libraries.map((library: any) => {
                             let label = `${library.title}`;
-                            let description = "";
 
-                            let option: MessageSelectOptionData = {
+                            return {
                                 label: label.substring(0, 99),
-                                description,
                                 value: `scan,${library.title},${library.key}`,
-                            };
-
-                            return option;
+                            } as APISelectMenuOption;
                         })
                     )
             );

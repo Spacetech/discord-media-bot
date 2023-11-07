@@ -1,9 +1,9 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
+import { ActionRowBuilder, StringSelectMenuBuilder, SlashCommandBuilder } from "@discordjs/builders";
 
 import { ICommand } from "../command";
 import { sonarr } from "../../services/sonarr";
 import { IUserState, clearState } from "../../state";
+import { APISelectMenuOption, ButtonBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
 
 export const showCommand: ICommand = {
 
@@ -15,8 +15,8 @@ export const showCommand: ICommand = {
                 .setDescription("Show name")
                 .setRequired(true)),
 
-    commandProcessor: async (interaction: CommandInteraction, state: IUserState) => {
-        const showName = interaction.options.getString("name");
+    commandProcessor: async (interaction, state) => {
+        const showName = interaction.options.getString("name", true);
 
         if (!showName || showName.length === 0) {
             return { content: "Please provide a show name. e.g. /show Cosmos" };
@@ -31,9 +31,9 @@ export const showCommand: ICommand = {
             return { content: "No shows found" };
         }
 
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(
-                new MessageSelectMenu()
+                new StringSelectMenuBuilder()
                     .setCustomId("select")
                     .setPlaceholder("Nothing selected")
                     .addOptions(
@@ -63,13 +63,11 @@ export const showCommand: ICommand = {
                                 description = `${downloaded}/${total} episodes downloaded`;
                             }
 
-                            let option: MessageSelectOptionData = {
+                            return {
                                 label: label.substring(0, 99),
-                                description,
+                                description: description.length > 0 ? description : undefined,
                                 value: `show,details,${index}`,
-                            };
-
-                            return option;
+                            } as APISelectMenuOption;
                         })
                     )
             );
@@ -101,32 +99,32 @@ export const showCommand: ICommand = {
 
                     description += show.overview;
 
-                    const embed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                         .setColor("#0099ff")
                         .setTitle(show.title)
                         .setDescription(description)
                         .setImage(show.remotePoster);
 
-                    const buttons: MessageButton[] = [];
+                    const buttons: ButtonBuilder[] = [];
 
                     if (show.id === undefined) {
-                        buttons.push(new MessageButton()
+                        buttons.push(new ButtonBuilder()
                             .setCustomId("show,add")
                             .setLabel("Add show")
-                            .setStyle("PRIMARY"));
+                            .setStyle(ButtonStyle.Primary));
 
                     } else {
-                        buttons.push(new MessageButton()
+                        buttons.push(new ButtonBuilder()
                             .setCustomId("show,search")
                             .setLabel("Search for missing episodes")
-                            .setStyle("PRIMARY"));
-                        buttons.push(new MessageButton()
+                            .setStyle(ButtonStyle.Primary));
+                        buttons.push(new ButtonBuilder()
                             .setCustomId("show,quality")
                             .setLabel("Adjust search quality")
-                            .setStyle("SECONDARY"));
+                            .setStyle(ButtonStyle.Secondary));
                     }
 
-                    const row = new MessageActionRow()
+                    const row = new ActionRowBuilder<ButtonBuilder>()
                         .addComponents(buttons);
 
                     return { embeds: [embed], components: [row] };
@@ -197,21 +195,19 @@ export const showCommand: ICommand = {
                         num++;
                     }
 
-                    const row = new MessageActionRow()
+                    const row = new ActionRowBuilder<StringSelectMenuBuilder>()
                         .addComponents(
-                            new MessageSelectMenu()
+                            new StringSelectMenuBuilder()
                                 .setCustomId("select")
                                 .setPlaceholder("Nothing selected")
                                 .addOptions(
                                     filteredProfiles.map((result: any, index: number) => {
                                         let label = `${result[1]}`;
 
-                                        let option: MessageSelectOptionData = {
+                                        return {
                                             label: label.substring(0, 99),
                                             value: `show,quality,${index}`,
                                         };
-
-                                        return option;
                                     })
                                 )
                         );

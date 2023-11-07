@@ -1,9 +1,9 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, MessageSelectOptionData } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, StringSelectMenuBuilder, EmbedBuilder, ButtonStyle, APISelectMenuOption } from "discord.js";
 
 import { ICommand } from "../command";
 import { radarr } from "../../services/radarr";
-import { IUserState, clearState } from "../../state";
+import { clearState } from "../../state";
 
 export const movieCommand: ICommand = {
 
@@ -15,7 +15,7 @@ export const movieCommand: ICommand = {
                 .setDescription("Movie name")
                 .setRequired(true)),
 
-    commandProcessor: async (interaction: CommandInteraction, state: IUserState) => {
+    commandProcessor: async (interaction, state) => {
         const movieName = interaction.options.getString("name");
 
         if (!movieName || movieName.length === 0) {
@@ -31,9 +31,9 @@ export const movieCommand: ICommand = {
             return { content: "No movies found" };
         }
 
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(
-                new MessageSelectMenu()
+                new StringSelectMenuBuilder()
                     .setCustomId("select")
                     .setPlaceholder("Nothing selected")
                     .addOptions(
@@ -71,13 +71,11 @@ export const movieCommand: ICommand = {
                                 }
                             }
 
-                            let option: MessageSelectOptionData = {
+                            return {
                                 label: label.substring(0, 99),
-                                description,
+                                description: description.length > 0 ? description : undefined,
                                 value: `movie,details,${index}`,
-                            };
-
-                            return option;
+                            } as APISelectMenuOption;
                         })
                     )
             );
@@ -93,28 +91,28 @@ export const movieCommand: ICommand = {
         if (movie) {
             switch (subCommand) {
                 case "details": {
-                    const embed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                         .setColor("#0099ff")
                         .setTitle(`${movie.title} (${movie.year})`)
                         .setDescription(movie.overview)
                         .setImage(movie.remotePoster);
 
-                    const buttons: MessageButton[] = [];
+                    const buttons: ButtonBuilder[] = [];
 
                     if (!movie.monitored && !movie.hasFile) {
-                        buttons.push(new MessageButton()
+                        buttons.push(new ButtonBuilder()
                             .setCustomId("movie,add")
                             .setLabel("Add movie")
-                            .setStyle("PRIMARY"));
+                            .setStyle(ButtonStyle.Primary));
 
                     } else {
-                        buttons.push(new MessageButton()
+                        buttons.push(new ButtonBuilder()
                             .setCustomId("movie,search")
                             .setLabel(movie.hasFile ? "Search for a replacement" : "Search")
-                            .setStyle("PRIMARY"));
+                            .setStyle(ButtonStyle.Primary));
                     }
 
-                    const row = new MessageActionRow()
+                    const row = new ActionRowBuilder<ButtonBuilder>()
                         .addComponents(buttons);
 
                     clearState(state);
@@ -166,9 +164,9 @@ export const movieCommand: ICommand = {
                         return { content: "No results found" };
                     }
 
-                    const row = new MessageActionRow()
+                    const row = new ActionRowBuilder<StringSelectMenuBuilder>()
                         .addComponents(
-                            new MessageSelectMenu()
+                            new StringSelectMenuBuilder()
                                 .setCustomId("select")
                                 .setPlaceholder("Nothing selected")
                                 .addOptions(
@@ -176,13 +174,11 @@ export const movieCommand: ICommand = {
                                         let label = `${result.title}`;
                                         let description = `Size: ${(result.size / Math.pow(1024, 3)).toFixed(1)}gb. ${result.seeders} seeders / ${result.leechers} leechers`;
 
-                                        let option: MessageSelectOptionData = {
+                                        return {
                                             label: label.substring(0, 99),
                                             description,
                                             value: `movie,download,${index}`,
-                                        };
-
-                                        return option;
+                                        } as APISelectMenuOption;
                                     })
                                 )
                         );

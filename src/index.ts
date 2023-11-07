@@ -19,7 +19,13 @@ process.on("unhandledRejection", (ex) => {
 
 /////////////////////////////////////////////////////////////////
 
-const client = new discord.Client({ intents: [discord.Intents.FLAGS.GUILDS] });
+const client = new discord.Client({
+    intents: [
+        discord.GatewayIntentBits.Guilds,
+        discord.GatewayIntentBits.GuildMessages,
+        discord.GatewayIntentBits.MessageContent,
+    ],
+});
 
 client.on("ready", async () => {
     console.log(`Logged in as ${client.user?.tag}!`);
